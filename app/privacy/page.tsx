@@ -75,11 +75,12 @@ export default function PrivacyPolicy() {
 
               <h3 className="text-lg font-medium text-gray-800 mb-2 mt-6">3.2 Location Information</h3>
               <ul className="list-disc pl-6 text-gray-600 space-y-2">
-                <li><strong>Precise Location:</strong> When you check in to a venue, we collect your precise location to identify and display the venue you are at. This is only collected when you actively perform a check-in.</li>
+                <li><strong>Precise Location:</strong> When you check in to a venue, we collect your precise location to identify and display the venue you are at.</li>
+                <li><strong>Background Location:</strong> With your permission, we collect location data in the background to notify you when you arrive at a venue. This allows the app to prompt you to check in without needing to open the app first.</li>
                 <li><strong>Venue Information:</strong> The name and location of venues you check in to are stored as part of your check-in history.</li>
               </ul>
               <p className="text-gray-600 leading-relaxed mt-3">
-                <strong>Note:</strong> Location data is only collected when you initiate a check-in. We do not track your location in the background or when the app is not in use.
+                <strong>Your Control:</strong> You can disable background location access at any time in your device settings. The app will still function, but you will need to open the app manually to check in.
               </p>
 
               <h3 className="text-lg font-medium text-gray-800 mb-2 mt-6">3.3 Information Collected Automatically</h3>
@@ -92,11 +93,11 @@ export default function PrivacyPolicy() {
 
               <h3 className="text-lg font-medium text-gray-800 mb-2 mt-6">3.4 Information We Do NOT Collect</h3>
               <ul className="list-disc pl-6 text-gray-600 space-y-2">
-                <li>We do <strong>not</strong> collect background location data (location is only collected during active check-ins)</li>
                 <li>We do <strong>not</strong> collect financial or payment information</li>
                 <li>We do <strong>not</strong> collect health or fitness data</li>
                 <li>We do <strong>not</strong> collect contacts from your device address book without explicit permission</li>
                 <li>We do <strong>not</strong> track you across other apps or websites for advertising purposes</li>
+                <li>We do <strong>not</strong> sell or share your location data with third parties for advertising</li>
               </ul>
             </section>
 
@@ -345,7 +346,8 @@ export default function PrivacyPolicy() {
                   <h3 className="font-medium text-blue-800 mb-2">Data Collected</h3>
                   <ul className="text-sm text-blue-700 space-y-1">
                     <li>• Contact info (name, email)</li>
-                    <li>• Precise location (during check-ins only)</li>
+                    <li>• Precise location (check-ins)</li>
+                    <li>• Background location (venue detection)</li>
                     <li>• User content (photos, messages)</li>
                     <li>• Identifiers (user ID, device ID)</li>
                     <li>• Usage data (app interactions)</li>
@@ -355,7 +357,6 @@ export default function PrivacyPolicy() {
                 <div className="p-4 bg-green-50 rounded-lg">
                   <h3 className="font-medium text-green-800 mb-2">Data NOT Collected</h3>
                   <ul className="text-sm text-green-700 space-y-1">
-                    <li>• Background location tracking</li>
                     <li>• Financial information</li>
                     <li>• Health data</li>
                     <li>• Browsing history</li>
