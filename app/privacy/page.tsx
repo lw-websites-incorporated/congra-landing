@@ -73,7 +73,16 @@ export default function PrivacyPolicy() {
                 <li><strong>Connections:</strong> Information about your friends and connections within the App when you choose to connect with other users.</li>
               </ul>
 
-              <h3 className="text-lg font-medium text-gray-800 mb-2 mt-6">3.2 Information Collected Automatically</h3>
+              <h3 className="text-lg font-medium text-gray-800 mb-2 mt-6">3.2 Location Information</h3>
+              <ul className="list-disc pl-6 text-gray-600 space-y-2">
+                <li><strong>Precise Location:</strong> When you check in to a venue, we collect your precise location to identify and display the venue you are at. This is only collected when you actively perform a check-in.</li>
+                <li><strong>Venue Information:</strong> The name and location of venues you check in to are stored as part of your check-in history.</li>
+              </ul>
+              <p className="text-gray-600 leading-relaxed mt-3">
+                <strong>Note:</strong> Location data is only collected when you initiate a check-in. We do not track your location in the background or when the app is not in use.
+              </p>
+
+              <h3 className="text-lg font-medium text-gray-800 mb-2 mt-6">3.3 Information Collected Automatically</h3>
               <ul className="list-disc pl-6 text-gray-600 space-y-2">
                 <li><strong>Device Information:</strong> Device type, operating system version, unique device identifiers, and mobile network information.</li>
                 <li><strong>Usage Data:</strong> Features used, actions taken, time and date of use, and interaction patterns within the App.</li>
@@ -81,9 +90,9 @@ export default function PrivacyPolicy() {
                 <li><strong>Log Data:</strong> IP address, access times, and app crash reports for troubleshooting purposes.</li>
               </ul>
 
-              <h3 className="text-lg font-medium text-gray-800 mb-2 mt-6">3.3 Information We Do NOT Collect</h3>
+              <h3 className="text-lg font-medium text-gray-800 mb-2 mt-6">3.4 Information We Do NOT Collect</h3>
               <ul className="list-disc pl-6 text-gray-600 space-y-2">
-                <li>We do <strong>not</strong> collect precise location data</li>
+                <li>We do <strong>not</strong> collect background location data (location is only collected during active check-ins)</li>
                 <li>We do <strong>not</strong> collect financial or payment information</li>
                 <li>We do <strong>not</strong> collect health or fitness data</li>
                 <li>We do <strong>not</strong> collect contacts from your device address book without explicit permission</li>
@@ -332,24 +341,25 @@ export default function PrivacyPolicy() {
               <p className="text-gray-500 text-sm mb-4">For App Store and Google Play transparency requirements</p>
 
               <div className="grid gap-4 sm:grid-cols-2">
-                <div className="p-4 bg-green-50 rounded-lg">
-                  <h3 className="font-medium text-green-800 mb-2">Data NOT Collected</h3>
-                  <ul className="text-sm text-green-700 space-y-1">
-                    <li>• Precise location</li>
-                    <li>• Financial information</li>
-                    <li>• Health data</li>
-                    <li>• Browsing history</li>
-                    <li>• Advertising identifiers for tracking</li>
-                  </ul>
-                </div>
                 <div className="p-4 bg-blue-50 rounded-lg">
                   <h3 className="font-medium text-blue-800 mb-2">Data Collected</h3>
                   <ul className="text-sm text-blue-700 space-y-1">
                     <li>• Contact info (name, email)</li>
+                    <li>• Precise location (during check-ins only)</li>
                     <li>• User content (photos, messages)</li>
                     <li>• Identifiers (user ID, device ID)</li>
                     <li>• Usage data (app interactions)</li>
                     <li>• Diagnostics (crash logs)</li>
+                  </ul>
+                </div>
+                <div className="p-4 bg-green-50 rounded-lg">
+                  <h3 className="font-medium text-green-800 mb-2">Data NOT Collected</h3>
+                  <ul className="text-sm text-green-700 space-y-1">
+                    <li>• Background location tracking</li>
+                    <li>• Financial information</li>
+                    <li>• Health data</li>
+                    <li>• Browsing history</li>
+                    <li>• Advertising identifiers for tracking</li>
                   </ul>
                 </div>
               </div>
