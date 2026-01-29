@@ -1,266 +1,400 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 
 mapboxgl.accessToken = "pk.eyJ1IjoibHVrZXZiIiwiYSI6ImNta3ZvbmsyajA1YXIzZXF2aTluazEydHAifQ.h1grl3_dyWcLfPAU4jv4zQ";
 
-// Sample venue locations around London
-const VENUES = [
-  { name: "The Ivy", lng: -0.1337, lat: 51.5117, type: "restaurant" },
-  { name: "Fabric", lng: -0.1024, lat: 51.5201, type: "club" },
-  { name: "The Shard", lng: -0.0865, lat: 51.5045, type: "bar" },
-  { name: "Sky Garden", lng: -0.0838, lat: 51.5113, type: "bar" },
-  { name: "Dishoom", lng: -0.1256, lat: 51.5147, type: "restaurant" },
-  { name: "Soho House", lng: -0.1324, lat: 51.5138, type: "club" },
-  { name: "Duck & Waffle", lng: -0.0823, lat: 51.5154, type: "restaurant" },
-  { name: "Nightjar", lng: -0.0878, lat: 51.5265, type: "bar" },
-  { name: "The Ned", lng: -0.0879, lat: 51.5133, type: "hotel" },
-  { name: "Hawksmoor", lng: -0.0772, lat: 51.5194, type: "restaurant" },
-  { name: "Chiltern Firehouse", lng: -0.1528, lat: 51.5186, type: "restaurant" },
-  { name: "Sketch", lng: -0.1418, lat: 51.5126, type: "restaurant" },
-  { name: "Ministry of Sound", lng: -0.1003, lat: 51.4947, type: "club" },
-  { name: "XOYO", lng: -0.0823, lat: 51.5258, type: "club" },
-  { name: "Cargo", lng: -0.0772, lat: 51.5273, type: "club" },
-];
-
-// Sample user names for check-ins
 const USERS = [
   "Emma", "James", "Sophie", "Oliver", "Charlotte", "Harry", "Amelia", "Jack",
-  "Isla", "George", "Mia", "Noah", "Ava", "Leo", "Grace", "Oscar", "Lily", "Charlie"
+  "Isla", "George", "Mia", "Noah", "Ava", "Leo", "Grace", "Oscar", "Lily", "Charlie",
+  "Freya", "Archie", "Emily", "Alfie", "Poppy", "Henry", "Jessica", "Thomas"
 ];
 
-interface CheckIn {
-  id: string;
-  venue: typeof VENUES[0];
-  user: string;
-  marker?: mapboxgl.Marker;
-}
+const VENUE_NAMES = [
+  "Dishoom", "The Breakfast Club", "Boxpark", "Queen of Hoxton", "Cargo",
+  "XOYO", "Nightjar", "The Book Club", "Strongroom Bar", "Old Street Records",
+  "The Hoxton", "Barrio East", "Brick Lane Beigel", "93 Feet East",
+  "The Old Blue Last", "Happiness Forgets", "Callooh Callay", "Troy Bar",
+  "The Pride of Spitalfields", "Tramshed", "The Owl & Pussycat", "Ridley Road Market",
+  "Birthdays", "The Ace Hotel", "Paper Dress Vintage"
+];
+
+const NEON = [
+  { bg: "#ff2d95", glow: "255, 45, 149" },
+  { bg: "#00f0ff", glow: "0, 240, 255" },
+  { bg: "#b84dff", glow: "184, 77, 255" },
+  { bg: "#ff6b2d", glow: "255, 107, 45" },
+  { bg: "#00ff94", glow: "0, 255, 148" },
+];
 
 export default function MapBackground() {
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<mapboxgl.Map | null>(null);
-  const [checkIns, setCheckIns] = useState<CheckIn[]>([]);
-  const markersRef = useRef<Map<string, mapboxgl.Marker>>(new Map());
+  const markersRef = useRef<mapboxgl.Marker[]>([]);
 
   useEffect(() => {
     if (!mapContainer.current || map.current) return;
 
+    const centerLng = -0.0780;
+    const centerLat = 51.5255;
+
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
       style: "mapbox://styles/mapbox/dark-v11",
-      center: [-0.1078, 51.5154], // London center
-      zoom: 14,
+      center: [centerLng, centerLat],
+      zoom: 15.5,
       pitch: 60,
-      bearing: -20,
+      bearing: 20,
       antialias: true,
-      interactive: false, // Disable interaction for background effect
+      interactive: false,
     });
 
     map.current.on("load", () => {
-      // Add 3D buildings
-      const layers = map.current!.getStyle().layers;
-      const labelLayerId = layers?.find(
-        (layer) => layer.type === "symbol" && layer.layout?.["text-field"]
-      )?.id;
+      const m = map.current!;
+      const layers = m.getStyle().layers;
 
-      map.current!.addLayer(
-        {
-          id: "3d-buildings",
-          source: "composite",
-          "source-layer": "building",
-          filter: ["==", "extrude", "true"],
-          type: "fill-extrusion",
-          minzoom: 12,
-          paint: {
-            "fill-extrusion-color": "#1a1a2e",
-            "fill-extrusion-height": ["get", "height"],
-            "fill-extrusion-base": ["get", "min_height"],
-            "fill-extrusion-opacity": 0.8,
-          },
+      // Kill all labels
+      layers?.forEach((layer) => {
+        if (layer.type === "symbol" && layer.layout?.["text-field"]) {
+          m.setLayoutProperty(layer.id, "visibility", "none");
+        }
+      });
+
+      // Deep void fog
+      m.setFog({
+        color: "rgb(8, 4, 18)",
+        "high-color": "rgb(20, 8, 40)",
+        "horizon-blend": 0.2,
+        "space-color": "rgb(5, 2, 12)",
+        "star-intensity": 0.4
+      });
+
+      // Dark cyberpunk buildings
+      m.addLayer({
+        id: "3d-buildings",
+        source: "composite",
+        "source-layer": "building",
+        filter: ["==", "extrude", "true"],
+        type: "fill-extrusion",
+        minzoom: 12,
+        paint: {
+          "fill-extrusion-color": [
+            "interpolate",
+            ["linear"],
+            ["get", "height"],
+            0, "#0c0818",
+            10, "#110b22",
+            25, "#16102c",
+            40, "#1c1436",
+            60, "#221840",
+            100, "#2a1e4d"
+          ],
+          "fill-extrusion-height": ["get", "height"],
+          "fill-extrusion-base": ["get", "min_height"],
+          "fill-extrusion-opacity": 0.95,
+          "fill-extrusion-vertical-gradient": true,
         },
-        labelLayerId
-      );
+      });
 
-      // Start the slow rotation
+      // Inky dark water
+      if (m.getLayer("water")) {
+        m.setPaintProperty("water", "fill-color", "#060312");
+      }
+
+      layers?.forEach((layer) => {
+        if (layer.id.includes("park") || layer.id.includes("landuse") || layer.id.includes("grass")) {
+          if (layer.type === "fill") {
+            m.setPaintProperty(layer.id, "fill-color", "#08100a");
+          }
+        }
+        // Faint cyan-purple roads
+        if (layer.id.includes("road") && layer.type === "line") {
+          m.setPaintProperty(layer.id, "line-color", "#1a1230");
+          m.setPaintProperty(layer.id, "line-opacity", 0.7);
+        }
+        if (layer.id.includes("background") && layer.type === "background") {
+          m.setPaintProperty(layer.id, "background-color", "#050210");
+        }
+      });
+
       rotateCamera();
-
-      // Start adding check-ins
-      addRandomCheckIn();
+      setTimeout(() => spawnCheckIn(), 600);
     });
 
+    let bearing = 20;
     const rotateCamera = () => {
       if (!map.current) return;
+      bearing -= 10;
       map.current.easeTo({
-        bearing: map.current.getBearing() - 0.1,
-        duration: 100,
+        bearing,
+        duration: 12000,
         easing: (t) => t,
       });
-      requestAnimationFrame(rotateCamera);
+      setTimeout(rotateCamera, 12000);
+    };
+
+    const spawnCheckIn = () => {
+      if (!map.current) {
+        setTimeout(spawnCheckIn, 1500);
+        return;
+      }
+
+      const bounds = map.current.getBounds();
+      const sw = bounds.getSouthWest();
+      const ne = bounds.getNorthEast();
+      const pad = 0.1;
+      const lngR = ne.lng - sw.lng;
+      const latR = ne.lat - sw.lat;
+      const lng = sw.lng + lngR * (pad + Math.random() * (1 - 2 * pad));
+      const lat = sw.lat + latR * (pad + Math.random() * (1 - 2 * pad));
+
+      const venue = VENUE_NAMES[Math.floor(Math.random() * VENUE_NAMES.length)];
+      const user = USERS[Math.floor(Math.random() * USERS.length)];
+      const c = NEON[Math.floor(Math.random() * NEON.length)];
+      const isHot = Math.random() > 0.6;
+
+      const el = document.createElement("div");
+      el.className = "marker-container";
+
+      if (isHot) {
+        el.innerHTML = `
+          <div class="cb-checkin" style="--c:${c.bg};--g:${c.glow}">
+            <div class="cb-flame">
+              <svg viewBox="0 0 24 24" fill="${c.bg}">
+                <path d="M12 23c-4.97 0-9-2.69-9-6 0-4 5-11 9-14 4 3 9 10 9 14 0 3.31-4.03 6-9 6z"/>
+              </svg>
+              <div class="cb-ring"></div>
+            </div>
+            <div class="cb-tag">
+              <span class="cb-name">${user}</span>
+              <span class="cb-place">${venue}</span>
+            </div>
+          </div>
+        `;
+      } else {
+        el.innerHTML = `
+          <div class="cb-checkin" style="--c:${c.bg};--g:${c.glow}">
+            <div class="cb-dot">
+              <span>${user[0]}</span>
+              <div class="cb-ring"></div>
+            </div>
+            <div class="cb-tag">
+              <span class="cb-name">${user}</span>
+              <span class="cb-place">${venue}</span>
+            </div>
+          </div>
+        `;
+      }
+
+      const marker = new mapboxgl.Marker({ element: el, anchor: "bottom" })
+        .setLngLat([lng, lat])
+        .addTo(map.current);
+
+      markersRef.current.push(marker);
+
+      setTimeout(() => {
+        el.querySelector(".cb-checkin")?.classList.add("out");
+        setTimeout(() => {
+          marker.remove();
+          markersRef.current = markersRef.current.filter(m => m !== marker);
+        }, 700);
+      }, 4500);
+
+      setTimeout(spawnCheckIn, 900 + Math.random() * 1400);
     };
 
     return () => {
+      markersRef.current.forEach(m => m.remove());
       map.current?.remove();
       map.current = null;
     };
   }, []);
 
-  const addRandomCheckIn = () => {
-    if (!map.current) {
-      setTimeout(addRandomCheckIn, 2000);
-      return;
-    }
-
-    const venue = VENUES[Math.floor(Math.random() * VENUES.length)];
-    const user = USERS[Math.floor(Math.random() * USERS.length)];
-    const id = `${Date.now()}-${Math.random()}`;
-
-    // Create marker element
-    const el = document.createElement("div");
-    el.className = "checkin-marker";
-    el.innerHTML = `
-      <div class="checkin-popup">
-        <div class="checkin-avatar">${user[0]}</div>
-        <div class="checkin-info">
-          <span class="checkin-user">${user}</span>
-          <span class="checkin-venue">${venue.name}</span>
-        </div>
-      </div>
-      <div class="checkin-pulse"></div>
-    `;
-
-    const marker = new mapboxgl.Marker({ element: el, anchor: "bottom" })
-      .setLngLat([venue.lng, venue.lat])
-      .addTo(map.current);
-
-    markersRef.current.set(id, marker);
-
-    // Remove marker after animation
-    setTimeout(() => {
-      marker.remove();
-      markersRef.current.delete(id);
-    }, 4000);
-
-    // Schedule next check-in
-    const delay = 1500 + Math.random() * 2000;
-    setTimeout(addRandomCheckIn, delay);
-  };
-
   return (
     <>
       <div ref={mapContainer} className="map-container" />
+      <div className="cb-overlay" />
       <style jsx global>{`
         .map-container {
           position: absolute;
-          top: 0;
-          left: 0;
+          inset: 0;
           width: 100%;
           height: 100%;
         }
 
-        .checkin-marker {
-          position: relative;
-          animation: markerAppear 0.4s ease-out forwards;
-        }
-
-        @keyframes markerAppear {
-          0% {
-            opacity: 0;
-            transform: scale(0) translateY(20px);
-          }
-          50% {
-            transform: scale(1.1) translateY(-5px);
-          }
-          100% {
-            opacity: 1;
-            transform: scale(1) translateY(0);
-          }
-        }
-
-        .checkin-popup {
-          display: flex;
-          align-items: center;
-          gap: 8px;
-          background: rgba(255, 255, 255, 0.95);
-          backdrop-filter: blur(10px);
-          padding: 8px 12px;
-          border-radius: 20px;
-          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-          animation: popupFloat 4s ease-in-out forwards;
-          white-space: nowrap;
-        }
-
-        @keyframes popupFloat {
-          0% {
-            opacity: 1;
-            transform: translateY(0);
-          }
-          70% {
-            opacity: 1;
-            transform: translateY(-10px);
-          }
-          100% {
-            opacity: 0;
-            transform: translateY(-20px);
-          }
-        }
-
-        .checkin-avatar {
-          width: 28px;
-          height: 28px;
-          border-radius: 50%;
-          background: linear-gradient(135deg, #0D9488, #14b8a6);
-          color: white;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-size: 12px;
-          font-weight: 600;
-        }
-
-        .checkin-info {
-          display: flex;
-          flex-direction: column;
-        }
-
-        .checkin-user {
-          font-size: 12px;
-          font-weight: 600;
-          color: #1a1a1a;
-          line-height: 1.2;
-        }
-
-        .checkin-venue {
-          font-size: 10px;
-          color: #666;
-          line-height: 1.2;
-        }
-
-        .checkin-pulse {
+        .cb-overlay {
           position: absolute;
-          bottom: -4px;
-          left: 50%;
-          transform: translateX(-50%);
-          width: 12px;
-          height: 12px;
-          background: #0D9488;
-          border-radius: 50%;
-          animation: pulse 1.5s ease-out infinite;
-        }
-
-        @keyframes pulse {
-          0% {
-            box-shadow: 0 0 0 0 rgba(13, 148, 136, 0.6);
-          }
-          100% {
-            box-shadow: 0 0 0 20px rgba(13, 148, 136, 0);
-          }
+          inset: 0;
+          pointer-events: none;
+          background:
+            radial-gradient(ellipse at 25% 25%, rgba(255, 45, 149, 0.06) 0%, transparent 50%),
+            radial-gradient(ellipse at 75% 75%, rgba(0, 240, 255, 0.06) 0%, transparent 50%),
+            radial-gradient(ellipse at 50% 50%, rgba(100, 30, 180, 0.08) 0%, transparent 60%);
+          mix-blend-mode: screen;
         }
 
         .mapboxgl-ctrl-logo,
         .mapboxgl-ctrl-attrib {
           display: none !important;
+        }
+
+        .marker-container {
+          pointer-events: none;
+        }
+
+        /* Check-in wrapper */
+        .cb-checkin {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          pointer-events: none;
+          opacity: 0;
+          animation: cbIn 0.6s ease-out forwards;
+        }
+        .cb-checkin.out {
+          animation: cbOut 0.6s ease-in forwards !important;
+        }
+        @keyframes cbIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+        @keyframes cbOut {
+          from { opacity: 1; }
+          to { opacity: 0; }
+        }
+
+        /* Flame icon */
+        .cb-flame {
+          position: relative;
+          width: 34px;
+          height: 42px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        .cb-flame svg {
+          width: 34px;
+          height: 42px;
+          filter:
+            drop-shadow(0 0 6px rgba(var(--g), 0.9))
+            drop-shadow(0 0 18px rgba(var(--g), 0.5))
+            drop-shadow(0 0 40px rgba(var(--g), 0.3));
+          animation: flicker 2.5s ease-in-out infinite;
+        }
+
+        /* Pulsing ring beneath icon */
+        .cb-ring {
+          position: absolute;
+          bottom: -4px;
+          left: 50%;
+          width: 50px;
+          height: 50px;
+          transform: translateX(-50%);
+          border-radius: 50%;
+          background: radial-gradient(circle, rgba(var(--g), 0.35) 0%, transparent 65%);
+          animation: ringPulse 2.5s ease-in-out infinite;
+        }
+
+        @keyframes flicker {
+          0%, 100% {
+            filter:
+              drop-shadow(0 0 6px rgba(var(--g), 0.9))
+              drop-shadow(0 0 18px rgba(var(--g), 0.5))
+              drop-shadow(0 0 40px rgba(var(--g), 0.3));
+          }
+          50% {
+            filter:
+              drop-shadow(0 0 10px rgba(var(--g), 1))
+              drop-shadow(0 0 28px rgba(var(--g), 0.7))
+              drop-shadow(0 0 56px rgba(var(--g), 0.4));
+          }
+        }
+
+        @keyframes ringPulse {
+          0%, 100% { opacity: 0.5; transform: translateX(-50%) scale(0.9); }
+          50% { opacity: 0.8; transform: translateX(-50%) scale(1.15); }
+        }
+
+        /* Avatar dot */
+        .cb-dot {
+          position: relative;
+          width: 32px;
+          height: 32px;
+          border-radius: 50%;
+          background: rgba(8, 4, 18, 0.85);
+          border: 2px solid var(--c);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          box-shadow:
+            0 0 8px rgba(var(--g), 0.7),
+            0 0 24px rgba(var(--g), 0.35),
+            inset 0 0 12px rgba(var(--g), 0.15);
+          animation: dotGlow 3s ease-in-out infinite;
+        }
+        .cb-dot .cb-ring {
+          bottom: -8px;
+          width: 46px;
+          height: 46px;
+        }
+
+        @keyframes dotGlow {
+          0%, 100% {
+            box-shadow:
+              0 0 8px rgba(var(--g), 0.7),
+              0 0 24px rgba(var(--g), 0.35),
+              inset 0 0 12px rgba(var(--g), 0.15);
+          }
+          50% {
+            box-shadow:
+              0 0 14px rgba(var(--g), 0.9),
+              0 0 40px rgba(var(--g), 0.5),
+              inset 0 0 18px rgba(var(--g), 0.25);
+          }
+        }
+
+        .cb-dot span {
+          color: var(--c);
+          font-size: 13px;
+          font-weight: 700;
+          text-shadow: 0 0 8px rgba(var(--g), 0.8);
+        }
+
+        /* Label tag */
+        .cb-tag {
+          margin-top: 8px;
+          background: rgba(8, 4, 18, 0.8);
+          backdrop-filter: blur(12px);
+          -webkit-backdrop-filter: blur(12px);
+          padding: 6px 12px;
+          border-radius: 8px;
+          border: 1px solid rgba(var(--g), 0.3);
+          box-shadow:
+            0 0 12px rgba(var(--g), 0.15),
+            inset 0 0 8px rgba(var(--g), 0.05);
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 1px;
+        }
+
+        .cb-name {
+          font-size: 11px;
+          font-weight: 600;
+          color: var(--c);
+          line-height: 1.4;
+          letter-spacing: 0.03em;
+          text-shadow: 0 0 8px rgba(var(--g), 0.6);
+        }
+
+        .cb-place {
+          font-size: 9px;
+          font-weight: 400;
+          color: rgba(255, 255, 255, 0.5);
+          line-height: 1.3;
+          letter-spacing: 0.02em;
         }
       `}</style>
     </>
