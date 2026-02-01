@@ -24,6 +24,15 @@ const ocFormatSans = localFont({
 export const metadata: Metadata = {
   title: "Congra - Celebrate Life's Moments",
   description: "The social app for celebrating and sharing life's special moments with friends and family.",
+  icons: {
+    icon: [
+      { url: "/images/favicon.ico", sizes: "any" },
+      { url: "/images/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+      { url: "/images/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+    ],
+    apple: "/images/apple-touch-icon.png",
+  },
+  manifest: "/site.webmanifest",
 };
 
 export default function RootLayout({

@@ -17,6 +17,9 @@ export default function PrivacyPolicy() {
             <Image src="/images/icon.png" alt="Congra" width={32} height={32} className="rounded-lg" />
             <span className="text-xl font-bold text-gray-900">congra</span>
           </Link>
+          <Link href="/" className="text-sm text-gray-500 hover:text-gray-700 transition-colors flex items-center gap-1">
+            <span aria-hidden="true">&larr;</span> Back to site
+          </Link>
         </div>
       </header>
 
