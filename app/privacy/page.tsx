@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -13,12 +14,8 @@ export default function PrivacyPolicy() {
       <header className="border-b border-gray-100">
         <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-[var(--accent)] flex items-center justify-center">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5">
-                <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
-              </svg>
-            </div>
-            <span className="text-xl font-semibold text-gray-900">Congra</span>
+            <Image src="/images/icon.png" alt="Congra" width={32} height={32} className="rounded-lg" />
+            <span className="text-xl font-bold text-gray-900">congra</span>
           </Link>
         </div>
       </header>
@@ -385,6 +382,9 @@ export default function PrivacyPolicy() {
           <div className="flex items-center gap-6">
             <Link href="/" className="text-sm text-gray-500 hover:text-gray-700 transition-colors">
               Home
+            </Link>
+            <Link href="/support" className="text-sm text-gray-500 hover:text-gray-700 transition-colors">
+              Support
             </Link>
           </div>
         </div>
