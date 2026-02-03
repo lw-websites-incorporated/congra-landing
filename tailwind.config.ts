@@ -9,10 +9,11 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        accent: "#0D9488",
+        accent: "#4A90E2",
       },
       fontFamily: {
         sans: ["var(--font-oc-format-sans)", "system-ui", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "sans-serif"],
+        display: ["var(--font-playfair)", "Georgia", "serif"],
       },
     },
   },

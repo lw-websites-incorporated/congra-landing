@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import { Playfair_Display } from "next/font/google";
 import "./globals.css";
 
 const ocFormatSans = localFont({
@@ -18,6 +19,12 @@ const ocFormatSans = localFont({
     { path: "./fonts/OCFormatSans-BlkObl.otf", weight: "900", style: "italic" },
   ],
   variable: "--font-oc-format-sans",
+  display: "swap",
+});
+
+const playfair = Playfair_Display({
+  subsets: ["latin"],
+  variable: "--font-playfair",
   display: "swap",
 });
 
@@ -41,7 +48,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={ocFormatSans.variable}>
+    <html lang="en" className={`${ocFormatSans.variable} ${playfair.variable}`}>
       <body className="bg-white text-gray-900 antialiased font-sans">{children}</body>
     </html>
   );
