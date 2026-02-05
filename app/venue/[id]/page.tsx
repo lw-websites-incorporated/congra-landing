@@ -32,9 +32,9 @@ export default async function VenuePage({ params, searchParams }: PageProps) {
 
   const deviceType = getDeviceType(userAgent);
 
-  // Log the scan to Supabase
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  // Log the scan to Supabase (use non-prefixed env vars for server-side)
+  const supabaseUrl = process.env.SUPABASE_URL;
+  const supabaseKey = process.env.SUPABASE_ANON_KEY;
 
   let insertResult = 'not attempted';
   let insertError = null;
