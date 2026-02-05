@@ -3,6 +3,7 @@ import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 
 export const dynamic = 'force-dynamic';
+export const fetchCache = 'force-no-store';
 
 // Placeholder - replace with your actual App Store URL
 const APP_STORE_URL = 'https://apps.apple.com/app/congra/id123456789';
