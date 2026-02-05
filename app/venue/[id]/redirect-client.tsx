@@ -16,8 +16,8 @@ export function SmartAppRedirect({ venueId, venueName, appStoreUrl, deviceType }
       return;
     }
 
-    // Build the deep link URL with venue info
-    const deepLink = `congra://venue/${venueId}?name=${encodeURIComponent(venueName)}`;
+    // Build the deep link URL - go directly to checkin with venue pre-selected
+    const deepLink = `congra://checkin/new?venueId=${venueId}&venueName=${encodeURIComponent(venueName)}`;
 
     // Track if we've left the page (app opened)
     let hasLeftPage = false;
