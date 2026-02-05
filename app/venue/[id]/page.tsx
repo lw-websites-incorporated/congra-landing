@@ -33,14 +33,23 @@ export default async function VenuePage({ params }: PageProps) {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
+  console.log('QR Scan - Env vars present:', { hasUrl: !!supabaseUrl, hasKey: !!supabaseKey });
+
   if (supabaseUrl && supabaseKey) {
     const supabase = createClient(supabaseUrl, supabaseKey);
-    await supabase.from('qr_scans').insert({
+    const { error } = await supabase.from('qr_scans').insert({
       venue_id: id,
       device_type: deviceType,
       user_agent: userAgent,
       ip_address: ip,
     });
+    if (error) {
+      console.error('QR Scan insert error:', error);
+    } else {
+      console.log('QR Scan recorded for venue:', id);
+    }
+  } else {
+    console.warn('QR Scan skipped - missing env vars');
   }
 
   // Redirect based on device
