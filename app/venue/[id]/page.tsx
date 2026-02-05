@@ -1,6 +1,8 @@
-import { supabase } from '@/lib/supabase';
+import { createClient } from '@supabase/supabase-js';
 import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
+
+export const dynamic = 'force-dynamic';
 
 // Placeholder - replace with your actual App Store URL
 const APP_STORE_URL = 'https://apps.apple.com/app/congra/id123456789';
@@ -28,12 +30,18 @@ export default async function VenuePage({ params }: PageProps) {
   const deviceType = getDeviceType(userAgent);
 
   // Log the scan to Supabase
-  await supabase.from('qr_scans').insert({
-    venue_id: id,
-    device_type: deviceType,
-    user_agent: userAgent,
-    ip_address: ip,
-  });
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+  if (supabaseUrl && supabaseKey) {
+    const supabase = createClient(supabaseUrl, supabaseKey);
+    await supabase.from('qr_scans').insert({
+      venue_id: id,
+      device_type: deviceType,
+      user_agent: userAgent,
+      ip_address: ip,
+    });
+  }
 
   // Redirect based on device
   if (deviceType === 'iOS') {
