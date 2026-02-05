@@ -1,0 +1,14 @@
+{
+  "applinks": {
+    "apps": [],
+    "details": [
+      {
+        "appID": "LRENUR6J67.com.lukevonbergen.spotted",
+        "paths": ["/venue/*"]
+      }
+    ]
+  },
+  "webcredentials": {
+    "apps": ["LRENUR6J67.com.lukevonbergen.spotted"]
+  }
+}

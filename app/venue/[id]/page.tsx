@@ -2,12 +2,12 @@ import { createClient } from '@supabase/supabase-js';
 import { headers } from 'next/headers';
 import Image from 'next/image';
 import Link from 'next/link';
-import { RedirectToAppStore } from './redirect-client';
+import { SmartAppRedirect } from './redirect-client';
 
 export const dynamic = 'force-dynamic';
 
-// Replace with your actual App Store URL
-const APP_STORE_URL = 'https://apps.apple.com/app/congra/id123456789';
+// Set to your actual App Store URL once published, or null to disable redirect
+const APP_STORE_URL: string | null = null;
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -58,8 +58,13 @@ export default async function VenuePage({ params }: PageProps) {
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white flex flex-col">
-      {/* Auto-redirect iOS users to App Store - landing page shows as fallback */}
-      <RedirectToAppStore appStoreUrl={APP_STORE_URL} deviceType={deviceType} />
+      {/* Try to open app if installed, otherwise show landing page */}
+      <SmartAppRedirect
+        venueId={id}
+        venueName={venueName}
+        appStoreUrl={APP_STORE_URL}
+        deviceType={deviceType}
+      />
 
       {/* Header */}
       <header className="border-b border-white/10">
