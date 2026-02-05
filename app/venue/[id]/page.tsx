@@ -3,7 +3,6 @@ import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 
 export const dynamic = 'force-dynamic';
-export const fetchCache = 'force-no-store';
 
 // Placeholder - replace with your actual App Store URL
 const APP_STORE_URL = 'https://apps.apple.com/app/congra/id123456789';
@@ -13,7 +12,6 @@ const FALLBACK_URL = 'https://congra.app';
 
 interface PageProps {
   params: Promise<{ id: string }>;
-  searchParams: Promise<{ debug?: string }>;
 }
 
 function getDeviceType(userAgent: string): 'iOS' | 'Android' | 'Desktop' {
@@ -22,9 +20,8 @@ function getDeviceType(userAgent: string): 'iOS' | 'Android' | 'Desktop' {
   return 'Desktop';
 }
 
-export default async function VenuePage({ params, searchParams }: PageProps) {
+export default async function VenuePage({ params }: PageProps) {
   const { id } = await params;
-  const { debug } = await searchParams;
   const headersList = await headers();
   const userAgent = headersList.get('user-agent') || '';
   const forwardedFor = headersList.get('x-forwarded-for');
@@ -32,48 +29,18 @@ export default async function VenuePage({ params, searchParams }: PageProps) {
 
   const deviceType = getDeviceType(userAgent);
 
-  // Log the scan to Supabase (use non-prefixed env vars for server-side)
+  // Log the scan to Supabase
   const supabaseUrl = process.env.SUPABASE_URL;
   const supabaseKey = process.env.SUPABASE_ANON_KEY;
 
-  let insertResult = 'not attempted';
-  let insertError = null;
-
   if (supabaseUrl && supabaseKey) {
     const supabase = createClient(supabaseUrl, supabaseKey);
-    const { error } = await supabase.from('qr_scans').insert({
+    await supabase.from('qr_scans').insert({
       venue_id: id,
       device_type: deviceType,
       user_agent: userAgent,
       ip_address: ip,
     });
-    if (error) {
-      insertResult = 'error';
-      insertError = error.message;
-    } else {
-      insertResult = 'success';
-    }
-  } else {
-    insertResult = 'skipped - missing env vars';
-  }
-
-  // Debug mode - show what's happening instead of redirecting
-  if (debug === 'true') {
-    return (
-      <div style={{ fontFamily: 'monospace', padding: 20 }}>
-        <h1>QR Scan Debug</h1>
-        <pre>{JSON.stringify({
-          venueId: id,
-          deviceType,
-          hasSupabaseUrl: !!supabaseUrl,
-          hasSupabaseKey: !!supabaseKey,
-          supabaseUrlPrefix: supabaseUrl?.substring(0, 30) + '...',
-          insertResult,
-          insertError,
-          ip,
-        }, null, 2)}</pre>
-      </div>
-    );
   }
 
   // Redirect based on device
