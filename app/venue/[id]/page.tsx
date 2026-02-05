@@ -13,6 +13,7 @@ const FALLBACK_URL = 'https://congra.app';
 
 interface PageProps {
   params: Promise<{ id: string }>;
+  searchParams: Promise<{ debug?: string }>;
 }
 
 function getDeviceType(userAgent: string): 'iOS' | 'Android' | 'Desktop' {
@@ -21,8 +22,9 @@ function getDeviceType(userAgent: string): 'iOS' | 'Android' | 'Desktop' {
   return 'Desktop';
 }
 
-export default async function VenuePage({ params }: PageProps) {
+export default async function VenuePage({ params, searchParams }: PageProps) {
   const { id } = await params;
+  const { debug } = await searchParams;
   const headersList = await headers();
   const userAgent = headersList.get('user-agent') || '';
   const forwardedFor = headersList.get('x-forwarded-for');
@@ -34,7 +36,8 @@ export default async function VenuePage({ params }: PageProps) {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
-  console.log('QR Scan - Env vars present:', { hasUrl: !!supabaseUrl, hasKey: !!supabaseKey });
+  let insertResult = 'not attempted';
+  let insertError = null;
 
   if (supabaseUrl && supabaseKey) {
     const supabase = createClient(supabaseUrl, supabaseKey);
@@ -45,12 +48,32 @@ export default async function VenuePage({ params }: PageProps) {
       ip_address: ip,
     });
     if (error) {
-      console.error('QR Scan insert error:', error);
+      insertResult = 'error';
+      insertError = error.message;
     } else {
-      console.log('QR Scan recorded for venue:', id);
+      insertResult = 'success';
     }
   } else {
-    console.warn('QR Scan skipped - missing env vars');
+    insertResult = 'skipped - missing env vars';
+  }
+
+  // Debug mode - show what's happening instead of redirecting
+  if (debug === 'true') {
+    return (
+      <div style={{ fontFamily: 'monospace', padding: 20 }}>
+        <h1>QR Scan Debug</h1>
+        <pre>{JSON.stringify({
+          venueId: id,
+          deviceType,
+          hasSupabaseUrl: !!supabaseUrl,
+          hasSupabaseKey: !!supabaseKey,
+          supabaseUrlPrefix: supabaseUrl?.substring(0, 30) + '...',
+          insertResult,
+          insertError,
+          ip,
+        }, null, 2)}</pre>
+      </div>
+    );
   }
 
   // Redirect based on device
