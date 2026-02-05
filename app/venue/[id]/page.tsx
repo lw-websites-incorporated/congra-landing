@@ -6,8 +6,9 @@ import { SmartAppRedirect } from './redirect-client';
 
 export const dynamic = 'force-dynamic';
 
-// Set to your actual App Store URL once published, or null to disable redirect
-const APP_STORE_URL: string | null = null;
+// Set to your actual App Store URL once published
+// Using App Store search as temporary fallback until app is live
+const APP_STORE_URL: string | null = 'https://apps.apple.com/search?term=congra';
 
 interface PageProps {
   params: Promise<{ id: string }>;
