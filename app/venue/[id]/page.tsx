@@ -2,6 +2,7 @@ import { createClient } from '@supabase/supabase-js';
 import { headers } from 'next/headers';
 import Image from 'next/image';
 import Link from 'next/link';
+import { RedirectToAppStore } from './redirect-client';
 
 export const dynamic = 'force-dynamic';
 
@@ -57,6 +58,9 @@ export default async function VenuePage({ params }: PageProps) {
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white flex flex-col">
+      {/* Auto-redirect iOS users to App Store - landing page shows as fallback */}
+      <RedirectToAppStore appStoreUrl={APP_STORE_URL} deviceType={deviceType} />
+
       {/* Header */}
       <header className="border-b border-white/10">
         <div className="max-w-lg mx-auto px-6 py-4 flex items-center justify-center">
