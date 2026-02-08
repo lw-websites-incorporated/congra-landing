@@ -16,39 +16,60 @@ export default function ResetPassword() {
 
   useEffect(() => {
     const handleRecovery = async () => {
-      const hash = window.location.hash;
+      try {
+        // Case 1: Implicit flow — tokens in hash fragment (#access_token=...)
+        const hash = window.location.hash;
+        if (hash && hash.includes("access_token")) {
+          const params = new URLSearchParams(hash.substring(1));
+          const accessToken = params.get("access_token");
+          const refreshToken = params.get("refresh_token");
+          const type = params.get("type");
 
-      if (!hash || !hash.includes("access_token")) {
+          if (!accessToken || !refreshToken || type !== "recovery") {
+            setState("invalid");
+            setErrorMessage("Invalid reset link. Please request a new password reset.");
+            return;
+          }
+
+          const { error } = await supabase.auth.setSession({
+            access_token: accessToken,
+            refresh_token: refreshToken,
+          });
+
+          if (error) {
+            setState("error");
+            setErrorMessage("This reset link has expired. Please request a new password reset.");
+            return;
+          }
+
+          setState("ready");
+          return;
+        }
+
+        // Case 2: Code flow — auth code in query string (?code=...)
+        const urlParams = new URLSearchParams(window.location.search);
+        const code = urlParams.get("code");
+        if (code) {
+          const { error } = await supabase.auth.exchangeCodeForSession(code);
+
+          if (error) {
+            setState("error");
+            setErrorMessage("This reset link has expired or has already been used. Please request a new password reset.");
+            return;
+          }
+
+          setState("ready");
+          return;
+        }
+
+        // No tokens or code found
         setState("invalid");
         setErrorMessage("Invalid or missing reset link. Please request a new password reset.");
-        return;
-      }
-
-      // Parse the hash fragment
-      const params = new URLSearchParams(hash.substring(1));
-      const accessToken = params.get("access_token");
-      const refreshToken = params.get("refresh_token");
-      const type = params.get("type");
-
-      if (!accessToken || !refreshToken || type !== "recovery") {
-        setState("invalid");
-        setErrorMessage("Invalid reset link. Please request a new password reset.");
-        return;
-      }
-
-      // Set the session with the recovery tokens
-      const { error } = await supabase.auth.setSession({
-        access_token: accessToken,
-        refresh_token: refreshToken,
-      });
-
-      if (error) {
+      } catch (err) {
+        console.error("Reset password error:", err);
         setState("error");
-        setErrorMessage("This reset link has expired. Please request a new password reset.");
-        return;
+        setErrorMessage("Something went wrong. Please request a new password reset.");
       }
-
-      setState("ready");
     };
 
     handleRecovery();

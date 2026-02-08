@@ -37,7 +37,7 @@ export default function Support() {
                 If you need help, have a question, or want to report an issue, the fastest way to reach us is by email.
               </p>
               <div className="p-4 bg-gray-50 rounded-lg text-gray-600">
-                <p><strong>Email:</strong> luke_vb1@outlook.com</p>
+                <p><strong>Email:</strong> info@congra.app</p>
                 <p className="mt-2"><strong>Response Time:</strong> We aim to respond within 24 hours.</p>
               </div>
             </section>
@@ -82,7 +82,7 @@ export default function Support() {
                 <li>Confirm deletion</li>
               </ol>
               <p className="text-gray-600 leading-relaxed mt-3">
-                Alternatively, you can request account deletion by emailing <strong>luke_vb1@outlook.com</strong>.
+                Alternatively, you can request account deletion by emailing <strong>info@congra.app</strong>.
               </p>
             </section>
 
@@ -118,7 +118,7 @@ export default function Support() {
             <section>
               <h2 className="text-xl font-semibold text-gray-900 mb-3">Feedback</h2>
               <p className="text-gray-600 leading-relaxed">
-                We&apos;d love to hear from you. If you have suggestions for how we can improve Congra, or if something isn&apos;t working the way you&apos;d expect, let us know at <strong>luke_vb1@outlook.com</strong>.
+                We&apos;d love to hear from you. If you have suggestions for how we can improve Congra, or if something isn&apos;t working the way you&apos;d expect, let us know at <strong>info@congra.app</strong>.
               </p>
             </section>
 
