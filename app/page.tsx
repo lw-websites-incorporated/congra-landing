@@ -41,6 +41,12 @@ export default function Home() {
               >
                 Privacy
               </Link>
+              <Link
+                href="/referral-terms"
+                className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200"
+              >
+                Referral Terms
+              </Link>
             </nav>
             <a
               href="https://business.congra.app"
@@ -84,7 +90,9 @@ export default function Home() {
                 </p>
 
                 <a
-                  href="#"
+                  href="https://apps.apple.com/gb/app/congra-the-social-map/id6757765815"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="btn-lift inline-flex items-center gap-2 bg-gray-900 text-white px-7 py-3.5 rounded-full font-semibold text-sm hover:bg-gray-800 transition-colors duration-200 relative z-10"
                 >
                   Get Started
@@ -95,16 +103,16 @@ export default function Home() {
               <div className="hero-entrance hero-entrance-3 mt-10 flex items-center gap-6">
                 <span className="text-sm text-gray-500">The mobile app<br />is available now</span>
                 <div className="flex items-center gap-3">
-                  <a href="#" className="w-11 h-11 rounded-full border-2 border-gray-300 hover:border-gray-900 flex items-center justify-center transition-colors duration-200 group">
+                  <a href="https://apps.apple.com/gb/app/congra-the-social-map/id6757765815" target="_blank" rel="noopener noreferrer" className="w-11 h-11 rounded-full border-2 border-gray-300 hover:border-gray-900 flex items-center justify-center transition-colors duration-200 group">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" className="text-gray-700 group-hover:text-gray-900 transition-colors">
                       <path d="M18.71 19.5C17.88 20.74 17 21.95 15.66 21.97C14.32 22 13.89 21.18 12.37 21.18C10.84 21.18 10.37 21.95 9.1 22C7.79 22.05 6.8 20.68 5.96 19.47C4.25 17 2.94 12.45 4.7 9.39C5.57 7.87 7.13 6.91 8.82 6.88C10.1 6.86 11.32 7.75 12.11 7.75C12.89 7.75 14.37 6.68 15.92 6.84C16.57 6.87 18.39 7.1 19.56 8.82C19.47 8.88 17.39 10.1 17.41 12.63C17.44 15.65 20.06 16.66 20.09 16.67C20.06 16.74 19.67 18.11 18.71 19.5ZM13 3.5C13.73 2.67 14.94 2.04 15.94 2C16.07 3.17 15.6 4.35 14.9 5.19C14.21 6.04 13.07 6.7 11.95 6.61C11.8 5.46 12.36 4.26 13 3.5Z" />
                     </svg>
                   </a>
-                  <a href="#" className="w-11 h-11 rounded-full border-2 border-gray-300 hover:border-gray-900 flex items-center justify-center transition-colors duration-200 group">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" className="text-gray-700 group-hover:text-gray-900 transition-colors">
+                  <span className="w-11 h-11 rounded-full border-2 border-gray-200 flex items-center justify-center opacity-40 cursor-not-allowed">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" className="text-gray-400">
                       <path d="M3 20.5V3.5C3 2.91 3.34 2.39 3.84 2.15L13.69 12L3.84 21.85C3.34 21.6 3 21.09 3 20.5ZM16.81 15.12L6.05 21.34L14.54 12.85L16.81 15.12ZM20.16 10.81C20.5 11.08 20.75 11.5 20.75 12C20.75 12.5 20.53 12.9 20.18 13.18L17.89 14.5L15.39 12L17.89 9.5L20.16 10.81ZM6.05 2.66L16.81 8.88L14.54 11.15L6.05 2.66Z" />
                     </svg>
-                  </a>
+                  </span>
                 </div>
               </div>
             </div>
@@ -325,7 +333,9 @@ export default function Home() {
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <a
-              href="#"
+              href="https://apps.apple.com/gb/app/congra-the-social-map/id6757765815"
+              target="_blank"
+              rel="noopener noreferrer"
               className="btn-lift group inline-flex items-center gap-3 bg-white text-[#4A90E2] pl-5 pr-7 py-3.5 rounded-2xl font-bold text-[15px] hover:bg-white/95 shadow-xl shadow-black/10"
             >
               <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" className="opacity-80 group-hover:opacity-100 transition-opacity">
@@ -333,19 +343,18 @@ export default function Home() {
               </svg>
               Download for iOS
             </a>
-            <a
-              href="#"
-              className="btn-lift group inline-flex items-center gap-3 bg-white/[0.15] text-white border border-white/[0.25] pl-5 pr-7 py-3.5 rounded-2xl font-bold text-[15px] hover:bg-white/[0.25]"
+            <span
+              className="inline-flex items-center gap-3 bg-white/[0.08] text-white/40 border border-white/[0.12] pl-5 pr-7 py-3.5 rounded-2xl font-bold text-[15px] cursor-not-allowed"
             >
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" className="opacity-70 group-hover:opacity-90 transition-opacity">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" className="opacity-40">
                 <path d="M3 20.5V3.5C3 2.91 3.34 2.39 3.84 2.15L13.69 12L3.84 21.85C3.34 21.6 3 21.09 3 20.5ZM16.81 15.12L6.05 21.34L14.54 12.85L16.81 15.12ZM20.16 10.81C20.5 11.08 20.75 11.5 20.75 12C20.75 12.5 20.53 12.9 20.18 13.18L17.89 14.5L15.39 12L17.89 9.5L20.16 10.81ZM6.05 2.66L16.81 8.88L14.54 11.15L6.05 2.66Z" />
               </svg>
-              Google Play
-            </a>
+              Google Play — Coming Soon
+            </span>
           </div>
 
           <p className="text-xs text-white/50 mt-6 font-medium tracking-wide uppercase">
-            Coming soon to iOS &amp; Android
+            Coming soon to Android
           </p>
         </ScrollReveal>
       </section>

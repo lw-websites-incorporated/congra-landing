@@ -6,7 +6,7 @@ import { SmartAppRedirect } from './redirect-client';
 
 export const dynamic = 'force-dynamic';
 
-const APP_STORE_URL: string | null = 'https://apps.apple.com/app/congra-the-social-map/id6757765815';
+const APP_STORE_URL: string | null = 'https://apps.apple.com/gb/app/congra-the-social-map/id6757765815';
 
 interface PageProps {
   params: Promise<{ id: string }>;
