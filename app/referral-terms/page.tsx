@@ -49,7 +49,7 @@ export default function ReferralTerms() {
                 <li>You must be aged 18 or over at the time of participation.</li>
                 <li>You must be a resident of the United Kingdom.</li>
                 <li>
-                  Employees, contractors, and immediate family members of Congra are not eligible to win the monthly
+                  Employees and contractors of Congra are not eligible to win the monthly
                   competition prize, but may participate in the referral scheme for XP and badges.
                 </li>
               </ul>

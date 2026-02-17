@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import dynamic from "next/dynamic";
 import ScrollReveal from "./components/ScrollReveal";
+import MobileMenu from "./components/MobileMenu";
 
 const MapBackground = dynamic(() => import("./components/MapBackground"), {
   ssr: false,
@@ -16,7 +17,7 @@ export default function Home() {
       ═══════════════════════════════════════════ */}
       <section className="relative min-h-screen flex flex-col bg-[#FAFAFA] overflow-hidden">
         {/* Nav */}
-        <header className="relative z-10 w-full">
+        <header className="relative z-20 w-full">
           <div className="w-full px-8 lg:px-12 py-6 flex items-center justify-between">
             <Link href="/" className="group flex items-center gap-3">
               <Image
@@ -48,14 +49,17 @@ export default function Home() {
                 Referral Terms
               </Link>
             </nav>
-            <a
-              href="https://business.congra.app"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-sm font-semibold text-gray-900 border-2 border-gray-900 hover:bg-gray-900 hover:text-white px-5 py-2 rounded-full transition-all duration-200"
-            >
-              Congra for Business
-            </a>
+            <div className="flex items-center gap-3">
+              <a
+                href="https://business.congra.app"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm font-semibold text-gray-900 border-2 border-gray-900 hover:bg-gray-900 hover:text-white px-5 py-2 rounded-full transition-all duration-200"
+              >
+                Congra for Business
+              </a>
+              <MobileMenu />
+            </div>
           </div>
         </header>
 
