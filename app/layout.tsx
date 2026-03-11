@@ -52,10 +52,9 @@ export default function RootLayout({
     <html lang="en" className={`${ocFormatSans.variable} ${playfair.variable}`}>
       <head>
         <Script
-          defer
-          src="https://web-analytics-zas5g6dz5-luke-von-bergens-projects.vercel.app/tracker.js"
+          src="https://web-analytics-iota.vercel.app/tracker.js"
           data-site="8949cadd-ab37-4fb6-a103-21778f1790f0"
-          strategy="afterInteractive"
+          strategy="beforeInteractive"
         />
       </head>
       <body className="bg-white text-gray-900 antialiased font-sans">{children}</body>
