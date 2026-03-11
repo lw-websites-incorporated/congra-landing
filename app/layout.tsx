@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { Playfair_Display } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 
 const ocFormatSans = localFont({
@@ -49,6 +50,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${ocFormatSans.variable} ${playfair.variable}`}>
+      <head>
+        <Script
+          defer
+          src="https://web-analytics-iota.vercel.app/tracker.js"
+          data-site="8949cadd-ab37-4fb6-a103-21778f1790f0"
+          strategy="afterInteractive"
+        />
+      </head>
       <body className="bg-white text-gray-900 antialiased font-sans">{children}</body>
     </html>
   );
